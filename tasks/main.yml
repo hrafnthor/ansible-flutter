@@ -16,3 +16,8 @@
 - ansible.builtin.import_tasks: dart/main.yml
   when:
     - flutter.dart is defined
+
+
+- ansible.builtin.import_tasks: sdk/main.yml
+  when:
+    - flutter.sdk is defined

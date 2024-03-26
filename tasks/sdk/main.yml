@@ -1,0 +1,6 @@
+- name: Flutter | SDK | install
+  ansible.builtin.import_tasks: install.yml
+  when:
+    - ansible_distribution in ['Debian', 'Ubuntu']
+    - flutter.sdk is defined
+    - flutter.sdk.action == "install"

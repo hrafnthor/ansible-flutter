@@ -1,0 +1,21 @@
+
+- name: Flutter | SDK | Ensure installation path
+  ansible.builtin.file:
+    path: "{{ flutter.sdk.path | default('flutter_sdk_path') }}"
+    state: directory
+    modification_time: preserve
+    access_time: preserve
+    owner: "root"
+    group: "root"
+    mode: 0755
+
+
+- name: Flutter | SDK | Download versions
+  ansible.builtin.include_tasks: download.yml
+  loop: "{{ flutter.sdk.versions }}"
+  loop_control:
+    loop_var: version
+  when:
+    - flutter.sdk.versions is defined 
+    - flutter.sdk.versions | length > 0
+

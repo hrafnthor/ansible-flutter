@@ -7,11 +7,10 @@
     - flutter.dart is defined
     - flutter.dart.action == "install"
 
-    
+
 - name: Flutter | Dart | remove
   ansible.builtin.import_tasks: remove.yml
   when:
     - ansible_distribution in ['Debian', 'Ubuntu']
     - flutter.dart is defined
     - flutter.dart.action == "remove"
-
