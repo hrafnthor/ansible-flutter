@@ -1,0 +1,18 @@
+
+- name: Flutter | Dart | remove package
+  ansible.builtin.apt:
+    state: absent
+    name: dart
+
+
+- name: Flutter | Dart | remove repository 
+  ansible.builtin.apt_repository:
+    state: absent
+    repo: "deb [signed-by=/usr/share/keyrings/dart.gpg arch=amd64] https://storage.googleapis.com/download.dartlang.org/linux/debian stable main"
+    filename: dart_stable
+
+
+- name: Flutter | Dart | remove repository signing key
+  ansible.builtin.file:
+    state: absent
+    path: /usr/share/keyrings/dart.gpg
