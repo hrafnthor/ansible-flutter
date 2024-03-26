@@ -5,3 +5,9 @@
   delegate_to: localhost
   when:
     - flutter is defined
+
+
+- name: Flutter | Gather package facts
+  ansible.builtin.package_facts:
+    manager: "auto"
+  when: flutter.gather_facts is not defined or flutter.gather_facts
