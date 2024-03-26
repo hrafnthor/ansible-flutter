@@ -1,0 +1,83 @@
+{
+    "title": "Flutter & Dart lang",
+    "description": "Schema for Flutter & Dart lang installation",
+    "type": "object",
+    "properties":
+    {
+        "dart":
+        {
+            "type": "object",
+            "properties":
+            {
+                "action":
+                {
+                    "$ref": "#/definitions/action"
+                },
+                "signing":
+                {
+                    "type": "object",
+                    "properties":
+                    {
+                        "path":
+                        {
+                            "$ref": "#/definitions/non-empty-string"
+                        },
+                        "force":
+                        {
+                            "type": "boolean"
+                        }
+                    },
+                    "required":
+                    [
+                        "path"
+                    ]
+                },
+                "version":
+                {
+                    "$ref": "#/definitions/non-empty-string"
+                }
+            },
+            "required":
+            [
+                "action",
+                "signing"
+            ]
+        },
+        "sdk":
+        {
+            "type": "object",
+            "properties":
+            {
+                "action":
+                {
+                    "$ref": "#/definitions/action"
+                },
+                "version":
+                {
+                    "$ref": "#/definitions/non-empty-string"
+                }
+            },
+            "required":
+            [
+                "action",
+                "version"
+            ]
+        }
+    },
+    "definitions":
+    {
+        "non-empty-string":
+        {
+            "type": "string",
+            "minLength": 1
+        },
+        "action":
+        {
+            "enum":
+            [
+                "install",
+                "remove"
+            ]
+        }
+    }
+}

@@ -1,0 +1,21 @@
+galaxy_info:
+  author: Hrafn Thorvaldsson
+  description: An opinionated installation role for the 'Flutter' SDK (https://flutter.dev)
+  company: hth
+
+  license: Apache 2.0
+
+  min_ansible_version: 2.1
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - 20.04
+        - 22.04
+
+  galaxy_tags:
+    - flutter
+    - mobile
+    - sdk
+
+  dependencies: []

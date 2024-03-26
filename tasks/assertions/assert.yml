@@ -1,0 +1,14 @@
+- name: Flutter | Assert 'flutter' input
+  ansible.builtin.assert:
+    that:
+      - flutter is defined
+      - flutter is mapping
+
+- name: Flutter | Validate input schema
+  ansible.utils.validate:
+    data: "{{ flutter }}"
+    criteria:
+      - "{{ lookup('file',  'assertions/criteria/flutter-criteria.json') | from_json }}"
+    engine: ansible.utils.jsonschema
+  when:
+  - flutter is defined
