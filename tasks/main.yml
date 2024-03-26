@@ -11,3 +11,8 @@
   ansible.builtin.package_facts:
     manager: "auto"
   when: flutter.gather_facts is not defined or flutter.gather_facts
+
+
+- ansible.builtin.import_tasks: dart/main.yml
+  when:
+    - flutter.dart is defined

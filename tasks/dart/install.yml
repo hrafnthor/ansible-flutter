@@ -1,0 +1,50 @@
+# This file conatins tasks related to configuring and installing Dart directly
+# from Google's own package repository.
+#
+# See more:
+# https://dart.dev/get-dart
+
+
+- name: Flutter | Dart | Assure keyrings folder
+  ansible.builtin.file:
+    path: "/usr/share/keyrings"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+    modification_time: preserve
+    access_time: preserve
+
+
+- name: Flutter | Dart | Add repository signing key
+  ansible.builtin.copy:
+    src: "{{ flutter.dart.signing.path }}"
+    dest: "/usr/share/keyrings/dart.gpg"
+    force: "{{ flutter.dart.signing.force | default(false) }}"
+    owner: root
+    group: root
+    mode: 0644
+
+
+- name: Flutter | Dart | Add repository to sources
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/dart.gpg arch=amd64] https://storage.googleapis.com/download.dartlang.org/linux/debian stable main"
+    state: present
+    filename: dart_stable
+
+
+- name: Flutter | Dart | Install latest package
+  ansible.builtin.apt:
+    name: dart
+    state: latest
+  when:
+    - flutter.dart.version is not defined
+
+
+- name: Flutter | Dart | Install specific version package
+  ansible.builtin.apt:
+    name: "dart={{ flutter.dart.version }}"
+    state: present
+  when:
+    - flutter.dart.version is defined
+  
