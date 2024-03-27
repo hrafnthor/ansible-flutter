@@ -10,3 +10,9 @@
   when:
     - flutter.sdk is defined
     - flutter.sdk.trim is defined and flutter.sdk.trim
+
+
+- name: Flutter | SDK | Link default version
+  ansible.builtin.include_tasks: default.yml
+  when: 
+    - flutter.sdk.default | length > 0 
