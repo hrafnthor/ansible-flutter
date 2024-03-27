@@ -45,6 +45,7 @@
       owner: "root"
       group: "root"
       mode: 0755
+      extra_opts: ['--strip-components=1', '--show-stored-names']
     register: unarchive_state
     when: not flutter_version_dir.stat.exists
 
