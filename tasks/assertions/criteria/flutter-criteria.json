@@ -39,6 +39,10 @@
                 "version":
                 {
                     "$ref": "#/definitions/non-empty-string"
+                },
+                "path":
+                {
+                    "$ref": "#/definitions/non-empty-string"
                 }
             },
             "required":
@@ -56,30 +60,15 @@
                 {
                     "$ref": "#/definitions/action"
                 },
-                "versions":
+                "version":
                 {
-                    "type": "array",
-                    "items":
-                    {
-                        "$ref": "#/definitions/non-empty-string"
-                    }
-                },
-                "trim":
-                {
-                    "type": "boolean"
-                },
-                "default":
-                {
-                    "$ref": "#/definitions/non-empty-string"
-                },
-                "path": {
                     "$ref": "#/definitions/non-empty-string"
                 }
             },
             "required":
             [
                 "action",
-                "versions"
+                "version"
             ]
         }
     },

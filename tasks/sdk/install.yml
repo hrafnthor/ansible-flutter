@@ -1,21 +1,75 @@
 
+- name: Flutter | SDK | Set installation path
+  ansible.builtin.set_fact:
+    flutter_path: "{{ flutter_sdk_path }}"
+
+
+- name: Flutter | SDK | Lookup installation path
+  ansible.builtin.stat:
+    path:  "{{ flutter_path }}"
+  register: flutter_path_stat
+
+
 - name: Flutter | SDK | Ensure installation path
   ansible.builtin.file:
-    path: "{{ flutter.sdk.path | default('flutter_sdk_path') }}"
+    path: "{{ flutter_path }}"
     state: directory
     modification_time: preserve
     access_time: preserve
     owner: "root"
     group: "root"
     mode: 0755
-
-
-- name: Flutter | SDK | Download versions
-  ansible.builtin.include_tasks: download.yml
-  loop: "{{ flutter.sdk.versions }}"
-  loop_control:
-    loop_var: version
   when:
-    - flutter.sdk.versions is defined 
-    - flutter.sdk.versions | length > 0
+    - not flutter_path_stat.stat.exists
+
+
+- name: Flutter | SDK | Download version
+  block:
+
+  - name: Flutter | SDK | Set tmp archive name
+    ansible.builtin.set_fact:
+      flutter_archive_name: "flutter-{{ flutter.sdk.version }}.tar.gz"
+
+
+  - name: Flutter | SDK | Download version archive
+    ansible.builtin.get_url:
+      url: "https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_{{ flutter.sdk.version }}-stable.tar.xz"
+      dest: "/tmp/{{ flutter_archive_name }}"
+    register: archive_download_state
+
+
+  - name: Flutter | SDK | Extract archive
+    ansible.builtin.unarchive:
+      remote_src: yes
+      src: "/tmp/{{ flutter_archive_name }}"
+      dest: "{{ flutter_path }}"
+      owner: "root"
+      group: "root"
+      mode: 0755
+      extra_opts: ['--strip-components=1', '--show-stored-names']
+    register: unarchive_state
+
+
+  always:
+    - name: Flutter | SDK | Cleanup downloaded archive
+      ansible.builtin.file:
+        path: "/tmp/{{ flutter_archive_name }}"
+        state: absent
+  when:
+    - not flutter_path_stat.stat.exists
+
+
+
+- name: Flutter | SDK | Link binary
+  ansible.builtin.file:
+    src: "{{ flutter_path }}/bin/flutter"
+    dest: "/usr/bin/flutter"
+    state: link
+    modification_time: preserve
+    access_time: preserve
+    owner: "root"
+    group: "root"
+    mode: 0755
+  when:
+    - not flutter_path_stat.stat.exists
 
